@@ -23,10 +23,10 @@ public class Conexion {
     public Statement st=null;
     
     String usuario="xpame";
-    String password="1234";
+    String password="12345";
     String puerto="1433";
     String BDD="Northwind";
-    String ip="192.168.114.168";
+    String ip="localhost";
     
     public Connection obtenerConexion () throws SQLException{
         
@@ -52,6 +52,10 @@ public class Conexion {
        
         
         return conectar; 
+    }
+
+    public ResultSet executeQuery(String select_ProductName_UnitPrice_CategoryID_f) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
     

@@ -68,6 +68,10 @@ public class FrmConsulta1 extends javax.swing.JFrame {
          try{
 	if(obj.rs.previous());
         mostrarRegistro();
+        
+        if(obj.rs.isAfterLast()){
+            obj.rs.last();
+        }
              
              
 	}catch(SQLException e){
@@ -80,7 +84,10 @@ public class FrmConsulta1 extends javax.swing.JFrame {
          try{
 	if(obj.rs.next());
         mostrarRegistro();
-             
+         
+        if(obj.rs.isBeforeFirst()){
+            obj.rs.first();
+        }
              
 	}catch(SQLException e){
 		JOptionPane.showMessageDialog(this,e.toString(),"cargar",1);
