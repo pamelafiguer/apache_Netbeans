@@ -57,6 +57,11 @@ public class FrmConsulta3 extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton1.setText("CONSULTA POR PAIS");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -141,6 +146,12 @@ public class FrmConsulta3 extends javax.swing.JFrame {
         verClientes();
     }//GEN-LAST:event_cmdConsultarTodoActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        String pais = txtPais.getText();
+       verClientesPorPais(pais);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -204,7 +215,34 @@ void verClientes(){
         obj.rs=obj.st.executeQuery("select CompanyName, Country, CustomerID from Customers;");
         while(obj.rs.next()){
             Object data[]={obj.rs.getString(1),
-            obj.rs.getString(3),
+            obj.rs.getString(2),
+            obj.rs.getString(3)
+             };
+        modelo.addRow(data);
+       
+        }
+        jTable1.setModel(modelo);
+        obj.rs.close();
+        obj.conectar.close();
+                
+    }catch(SQLException e){
+        e.getMessage().toString();
+    }
+        
+}
+
+void verClientesPorPais(String country){
+    DefaultTableModel modelo=new DefaultTableModel();
+    modelo.addColumn("CompanyName");
+    modelo.addColumn("Country");
+    modelo.addColumn("CustomerID");
+    try{
+        obj.obtenerConexion();
+        obj.st=obj.conectar.createStatement(); 
+        obj.rs=obj.st.executeQuery("select CompanyName, Country, CustomerID from Customers where Country = '" + country + "'");
+        while(obj.rs.next()){
+            Object data[]={obj.rs.getString(1),
+            obj.rs.getString(2),
             obj.rs.getString(3)
              };
         modelo.addRow(data);

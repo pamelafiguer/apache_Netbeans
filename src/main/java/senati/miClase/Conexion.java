@@ -23,7 +23,7 @@ public class Conexion {
     public Statement st=null;
     
     String usuario="xpame";
-    String password="12345";
+    String password="1234";
     String puerto="1433";
     String BDD="Northwind";
     String ip="localhost";
@@ -45,7 +45,8 @@ public class Conexion {
         
         }catch(SQLDataException pame){
             
-            JOptionPane.showMessageDialog(null,"se conecto correctamente" + pame.toString()); 
+            JOptionPane
+                    .showMessageDialog(null,"se conecto correctamente" + pame.toString()); 
             JOptionPane.showMessageDialog(null,"no se conecto, error," + pame.toString());
         
         }
