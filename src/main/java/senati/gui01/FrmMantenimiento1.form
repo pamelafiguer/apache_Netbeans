@@ -226,9 +226,6 @@
             </Property>
             <Property name="text" type="java.lang.String" value="ACTUALIZAR"/>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdActualizarActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="cmdEliminar">
           <Properties>

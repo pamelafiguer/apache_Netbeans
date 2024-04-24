@@ -4,7 +4,6 @@
  */
 package senati.gui01;
 
-import java.nio.file.AccessMode;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -95,11 +94,6 @@ public class FrmMantenimiento1 extends javax.swing.JFrame {
 
         cmdActualizar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         cmdActualizar.setText("ACTUALIZAR");
-        cmdActualizar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdActualizarActionPerformed(evt);
-            }
-        });
 
         cmdEliminar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         cmdEliminar.setText("ELIMINAR");
@@ -219,15 +213,6 @@ public class FrmMantenimiento1 extends javax.swing.JFrame {
        
     }//GEN-LAST:event_cmdBuscarActionPerformed
 
-    private void cmdActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdActualizarActionPerformed
-        // TODO add your handling code here:
-        
-        int xcod = Integer.parseInt(txtCodigo.getText());
-        String nom=(txtNOmbre.getText());
-        int tele = Integer.parseInt(txtTele.getText());
-        MetodoActualizar(xcod, nom, tele);
-    }//GEN-LAST:event_cmdActualizarActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -345,40 +330,6 @@ void buscarEmpresa(int cod){
     
 }
 
-
-
-void MetodoActualizar (int cod, String nom, int Tele   ){
-    
-     try{
-       obj.obtenerConexion();
-      PreparedStatement pst=obj.conectar.prepareStatement("update Shippers set CompanyName = ?, Phone=? WHERE ShipperID = ?;");
-      pst.setString(1, nom);
-      pst.setInt(2, cod);
-      pst.setInt(3, Tele);
-      pst.executeUpdate();
-    
-      obj.rs=pst.executeQuery();
-      if(obj.rs.next()){
-          txtNOmbre.setText(obj.rs.getString(2));
-          txtTele.setText(obj.rs.getString(3));
-      }else{
-          txtNOmbre.setText(obj.rs.getString(2));
-          txtTele.setText(obj.rs.getString(3));
-          mensaje("El codigo no exite");
-      }
-      obj.rs.close();
-      obj.conectar.close();
-        
-    }catch(SQLException e){
-        mensaje(e.toString());
-    }
-    
-    
-}
-        
-        
-        
-        
 }
 
   
