@@ -23,7 +23,7 @@ public class FrmInformacionCliente extends javax.swing.JFrame {
     
     public FrmInformacionCliente() {
         initComponents();
-      
+        txtCodigo.setEnabled(false);
         cmbBuscar.setEnabled(true);
         listareEmpleador();
         cargarPais();
@@ -131,7 +131,7 @@ public class FrmInformacionCliente extends javax.swing.JFrame {
                             .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtFN, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 444, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -147,7 +147,7 @@ public class FrmInformacionCliente extends javax.swing.JFrame {
                                 .addComponent(cboPais, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(21, Short.MAX_VALUE))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -357,7 +357,7 @@ public class FrmInformacionCliente extends javax.swing.JFrame {
 
     private void cmbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbEliminarActionPerformed
         // TODO add your handling code here:
-        int xcod=Integer.parseInt(JOptionPane.showInputDialog("Escribe el codigo"));
+        int xcod=Integer.parseInt(txtCodigo.getText());
         txtCodigo.setText(" " + xcod);
         
         EliminarEmpleador(xcod);
@@ -372,10 +372,10 @@ public class FrmInformacionCliente extends javax.swing.JFrame {
              String nombre = txtNombre.getText();
              String apellido = txtApellido.getText();
              String fechaN = txtFN.getText();
-             String ciudad = txtCiudad.getText();
              String Direccion = txtDireccion.getText();
-            String pais = cboPais.getSelectedItem().toString();
-        actualizarEmpleadores(cod, nombre, apellido, fechaN, ciudad, Direccion, pais);
+             String ciudad = txtCiudad.getText();
+             String pais = cboPais.getSelectedItem().toString();
+        actualizarEmpleadores(cod, nombre, apellido, fechaN, Direccion,ciudad, pais);
         listareEmpleador();
         cmbGuardar.setEnabled(false);
                 cmbEliminar.setEnabled(false);
@@ -497,20 +497,18 @@ void listareEmpleador(){
 	modelo.addColumn("Nombres");
 	modelo.addColumn("Apellidos");
 	modelo.addColumn("F.NACIMIENTO");
+        modelo.addColumn("DIRECCION");
 	modelo.addColumn("CIUDAD");
-	modelo.addColumn("DIRECCION");
 	modelo.addColumn("PAIS");
-	
-	
 
 	try{
 	obj.obtenerConexion();
-	obj.pst=obj.conectar.prepareStatement("select * from Employees;");
+	obj.pst=obj.conectar.prepareStatement("select EmployeeID, FirstName, LastName,BirthDate, Address, City, Country from Employees;");
 	obj.rs=obj.pst.executeQuery();
 	while(obj.rs.next()){
 		
-		Object datos[]=new Object[6];
-		for(int i=0;i<6;i++){
+		Object datos[]=new Object[7];
+		for(int i=0;i<7;i++){
 			datos[i]=obj.rs.getString(i+1);
 			
 		}
@@ -535,7 +533,7 @@ void listareEmpleador(){
     
     try{
         obj.obtenerConexion();
-        obj.pst=obj.conectar.prepareStatement("select Country from Employees;");
+        obj.pst=obj.conectar.prepareStatement("select distinct Country from Employees;");
         obj.rs=obj.pst.executeQuery();
         while(obj.rs.next())
             cboPais.addItem(obj.rs.getString(1));
@@ -552,17 +550,16 @@ void listareEmpleador(){
  void BuscarEmpleador(int cod) {
      try{
         obj.obtenerConexion();
-        obj.pst = obj.conectar.prepareStatement("select * from Employees");
+        obj.pst = obj.conectar.prepareStatement("select EmployeeID, LastName, FirstName, BirthDate, Address, City, Country from Employees where EmployeeID = ?;");
         obj.pst.setInt(1, cod);
         obj.rs = obj.pst.executeQuery();
         if(obj.rs.next()) {
+            txtCodigo.setText(obj.rs.getString("EmployeeID"));
             txtNombre.setText(obj.rs.getString("FirstName"));
             txtApellido.setText(obj.rs.getString("LastName"));
             txtFN.setText(obj.rs.getString("BirthDate"));
             txtCiudad.setText(obj.rs.getString("City"));
             txtDireccion.setText(obj.rs.getString("Address"));
-            
-          
             String Pais = obj.rs.getString("Country");
             cboPais.setSelectedItem(Pais);
         }else{
@@ -598,8 +595,8 @@ void listareEmpleador(){
             String pais = cboPais.getSelectedItem().toString();
             
             
-            String xGuardar = "INSERT INTO Employees (LastName, FirstName, BirthDate, Address, City, Country)VALUES";
-            xGuardar+="('"+apellido+" ','" + nombre +"','"+ Nacimiento+"','" + direccion+ "','" + ciudad+  "','" + pais+ "')";
+            String xGuardar = "INSERT INTO Employees ( FirstName,LastName, BirthDate, Address, City, Country)VALUES";
+            xGuardar+="('"+nombre+" ','" + apellido +"','"+ Nacimiento+"','" + direccion+ "','" + ciudad+  "','" + pais+ "')";
             obj.st=obj.conectar.createStatement();
             obj.st.executeUpdate(xGuardar);
              mensaje("Registro guardado correctamente");
@@ -626,9 +623,8 @@ void listareEmpleador(){
 	try{
 		obj.obtenerConexion();
 		
-               obj.pst=obj.conectar.prepareStatement("DELETE FROM EmployeeTerritories WHERE EmployeeID = ?;DELETE FROM Employees WHERE EmployeeID = ?;");
+               obj.pst=obj.conectar.prepareStatement("DELETE FROM Employees WHERE EmployeeID = ?;");
                obj.pst.setInt(1, xcod);
-               obj.pst.setInt(2, xcod);
                obj.pst.executeUpdate();
                mensaje("Datos eliminados");
                obj.conectar.close();
