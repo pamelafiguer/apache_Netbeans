@@ -329,6 +329,7 @@ public class FrmInformacionCliente extends javax.swing.JFrame {
                 txtFN.setText((String) tbVista.getValueAt(y, 3));
                 txtDireccion.setText((String) tbVista.getValueAt(y, 4));
                 txtCiudad.setText((String) tbVista.getValueAt(y, 5));
+                 cboPais.setSelectedItem(tbVista.getValueAt(y, 6));
                 
   
                            }
